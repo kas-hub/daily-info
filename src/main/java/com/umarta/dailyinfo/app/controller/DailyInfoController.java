@@ -2,7 +2,7 @@ package com.umarta.dailyinfo.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.umarta.dailyinfo.app.exception.DailyInfoException;
+import com.umarta.dailyinfo.app.exception.ParseException;
 import com.umarta.dailyinfo.app.model.ValCurs;
 import com.umarta.dailyinfo.app.service.DailyInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,8 @@ public class DailyInfoController implements DailyInfoApi {
             return ResponseEntity.ok()
                     .body(jsonValCurs);
         } catch (JsonProcessingException exception) {
-            throw new DailyInfoException(exception.getLocalizedMessage());
+            log.error("Error during creation of JSON", exception);
+            throw new ParseException("Ошибка обработки данных из ЦБ");
         }
     }
 }
