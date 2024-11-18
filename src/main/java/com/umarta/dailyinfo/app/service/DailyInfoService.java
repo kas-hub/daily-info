@@ -51,7 +51,7 @@ public class DailyInfoService {
                     client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (Exception exception) {
-            log.error("Request by URL error: {}", url, exception);
+            log.error("Error during request by URL: {}", url, exception);
             throw new DailyInfoException("Данные из ЦБ не получены");
         }
     }
