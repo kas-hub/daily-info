@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "cbr")
 public class CbrConfig {
     String url;
+
+    String urlSoap;
 }
