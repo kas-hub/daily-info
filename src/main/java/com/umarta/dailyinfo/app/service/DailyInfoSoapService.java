@@ -51,13 +51,14 @@ public class DailyInfoSoapService {
                         "</soap:Envelope>",
                 localDate);
 
-        List<ValuteCursOnDate> valuteCursOnDateList = getResponseCbrSoap(requestSoap);
+        String response = getResponseCbrSoap(requestSoap);
+        List<ValuteCursOnDate> valuteCursOnDateList = parseCursOnDateXml(response);
         ValuteData valuteData = new ValuteData();
         valuteData.setValuteCursOnDateList(valuteCursOnDateList);
         return valuteData;
     }
 
-    private List<ValuteCursOnDate> getResponseCbrSoap(String soapRequest) {
+    private String getResponseCbrSoap(String soapRequest) {
         try {
             URL objUrl = new URL(cbrConfig.getUrlSoap());
             HttpURLConnection urlConnection = (HttpURLConnection) objUrl.openConnection();
@@ -77,15 +78,14 @@ public class DailyInfoSoapService {
                 response.append(inputLine);
             }
             reader.close();
-
-            return parseXml(response.toString());
+            return response.toString();
         } catch (Exception exception) {
             log.error("Error during request by SOAP:", exception);
             throw new DailyInfoException("Данные из ЦБ не получены");
         }
     }
 
-    public static List<ValuteCursOnDate> parseXml(String xml) {
+    public static List<ValuteCursOnDate> parseCursOnDateXml(String xml) {
         List<ValuteCursOnDate> valuteCursOnDateList = new ArrayList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
